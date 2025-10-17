@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* base */
+html, body {
+  background: #252525;
+  color: #F8FAFC;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* utilitaires sans @apply "/xx" */
+.bg-iris-grad { background-image: linear-gradient(45deg, #6366F1, #22D3EE); }
+.bg-blush-grad { background-image: linear-gradient(45deg, #EC4899, #F59E0B); }
+.text-grad { -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.glass { background-color: rgba(43,43,43,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.10); box-shadow: 0 8px 32px rgba(0,0,0,.3); border-radius: 24px; }
+
+.hairline { border: 1px solid rgba(255,255,255,0.10); border-radius: 24px; }
+
+.bg-noise { 
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+}
