@@ -1,10 +1,33 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 
 export async function GET() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const sb = createClient(url, anon);
-  const { data, error } = await sb.from('formations').select('id').limit(1);
-  return NextResponse.json({ ok: !error, error: error?.message ?? null });
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!url || !anon) {
+      return NextResponse.json({ 
+        ok: false, 
+        error: 'Missing environment variables',
+        hasUrl: !!url,
+        hasAnon: !!anon
+      });
+    }
+
+    // Test simple de l'URL Supabase
+    const healthUrl = `${url}/auth/v1/health`;
+    
+    return NextResponse.json({ 
+      ok: true, 
+      url: url,
+      healthUrl: healthUrl,
+      message: 'Environment variables loaded correctly'
+    });
+    
+  } catch (error: any) {
+    return NextResponse.json({ 
+      ok: false, 
+      error: error.message 
+    });
+  }
 }

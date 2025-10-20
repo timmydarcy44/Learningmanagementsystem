@@ -8,9 +8,8 @@ export { SectionHeader } from './SectionHeader'
 export { Stat } from './Stat'
 
 // Motion Components
-export { Motion } from './Motion'
+export { MotionWrapper, MotionDiv, MotionSpan } from './Motion'
 
 // Layout Components
-export { Navbar } from '../layout/Navbar'
-export { Sidebar, SidebarItem, SidebarGroup } from '../layout/Sidebar'
+export { default as Sidebar } from '../layout/Sidebar'
 

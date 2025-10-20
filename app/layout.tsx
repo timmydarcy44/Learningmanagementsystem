@@ -1,5 +1,5 @@
-import '@/styles/globals.css';
-import ClientShell from '@/components/layout/ClientShell';
+import './globals.css';
+import { ToastProvider } from '@/components/ui/Toast';
 
 export const metadata = {
   title: 'LMS - Learning Management System',
@@ -10,9 +10,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className="h-full">
       <body className="h-full bg-[#252525] text-neutral-100 font-sans min-h-screen antialiased">
-        <ClientShell>
+        <ToastProvider>
           {children}
-        </ClientShell>
+        </ToastProvider>
       </body>
     </html>
   );

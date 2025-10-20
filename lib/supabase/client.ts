@@ -1,14 +1,31 @@
 'use client';
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
-export const supabaseBrowser = () => {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+function clean(v?: string | null) {
+  return (v ?? '').trim().replace(/^['"]|['"]$/g, '');
+}
 
-  if (!url) throw new Error('Missing env: NEXT_PUBLIC_SUPABASE_URL');
-  if (!anon) throw new Error('Missing env: NEXT_PUBLIC_SUPABASE_ANON_KEY');
+let _client: ReturnType<typeof createBrowserClient> | null = null;
 
-  return createClient(url, anon, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-  });
-};
+export function supabaseBrowser() {
+  if (_client) return _client;
+  const rawUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const rawAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  const url  = clean(rawUrl);
+  const anon = clean(rawAnon);
+
+  // Si les variables d'environnement ne sont pas disponibles (build time), retourner un client mock
+  if (!url || !anon) {
+    console.warn('[supabaseBrowser] Variables d\'environnement manquantes, utilisation d\'un client mock');
+    _client = createBrowserClient('https://mock.supabase.co', 'mock-key');
+    return _client;
+  }
+
+  try { new URL(url); } catch {
+    throw new Error(`[supabaseBrowser] Invalid NEXT_PUBLIC_SUPABASE_URL: "${rawUrl}"`);
+  }
+
+  _client = createBrowserClient(url, anon);
+  return _client;
+}
